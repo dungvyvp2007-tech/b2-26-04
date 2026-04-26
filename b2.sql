@@ -12,8 +12,8 @@ CREATE TABLE SanPham (
     MaSanPham INT PRIMARY KEY NOT NULL,
     TenSanPham VARCHAR(100),
     MaDanhMuc INT,
-    GiaBan DECIMAL(10,0),
-    SoLuongTon INT,
+    GiaBan DECIMAL(10,0) CHECK (GiaBan > 0),
+    SoLuongTon INT DEFAULT 0,
     FOREIGN KEY (MaDanhMuc) REFERENCES DanhMuc(MaDanhMuc)
 );
 
@@ -21,16 +21,16 @@ CREATE TABLE SanPham (
 CREATE TABLE KhachHang (
     MaKhachHang INT PRIMARY KEY NOT NULL,
     TenKhachHang VARCHAR(100),
-    DiaChi VARCHAR(200),
-    SoDienThoai VARCHAR(15)
+    DiaChi VARCHAR(200) UNIQUE,
+    SoDienThoai VARCHAR(15) UNIQUE 
 );
 
 -- Bảng đơn hàng
 CREATE TABLE DonHang (
     MaDonHang INT PRIMARY KEY NOT NULL,
     MaKhachHang INT,
-    NgayMua DATE,
-    TrangThai NVARCHAR(50),
+    NgayMua DATE DEFAULT CURRENT_TIMESTAMP,
+    TrangThai VARCHAR(50),
     FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang)
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE ChiTietDonHang (
     MaDonHang INT,
     MaSanPham INT,
     SoLuong INT,
-    DonGia DECIMAL(10,0),
+    DonGia DECIMAL(10,0) CHECK(DonGia > 0),
     FOREIGN KEY (MaDonHang) REFERENCES DonHang(MaDonHang),
     FOREIGN KEY (MaSanPham) REFERENCES SanPham(MaSanPham)
 );
